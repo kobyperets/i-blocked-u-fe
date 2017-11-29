@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,16 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-//import com.loopj.android.http.JsonHttpResponseHandler;
-//import com.loopj.android.http.RequestParams;
-//
-//import org.json.JSONArray;
-//import org.json.JSONException;
-//import org.json.JSONObject;
-//
-//import cz.msebera.android.httpclient.Header;
 
 public class IBlockedUMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -53,11 +46,13 @@ public class IBlockedUMainActivity extends AppCompatActivity
     public static final String PREFS_NAME = "IBlockedUPrefs";
     private IBlockedUFragment iBlockedUFragment;
     private IBlockUWHOFragment iBlockUWHOFragment;
+    private IBlockedUFormFragment iBlockedUFormFragment;
     private TextView nameLabel;
     private TextView emailLabel;
     private EditText signinEmailEditText;
     private Button signinInBtn;
     private NavigationView navigationView;
+    private ConnectivityManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,25 +91,8 @@ public class IBlockedUMainActivity extends AppCompatActivity
             enableSignedInUser(userEmail, name);
         }
 
-        putLisenceData();
+        cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
-
-    private void putLisenceData() {
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-        int updatedOn = settings.getInt("licensePlates", 0);
-        //0 means we haven't enter the data yet, let's do it now
-        if (updatedOn == 0) {
-            int date = (int) (new Date().getTime()/1000);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("licensesPlateDate", date);
-            editor.putString("1797538", "Adam Elimelech");
-            editor.commit();
-        }
-
-        //TODO update if too old
-
-    }
-
 
     private void enableSignedInUser(String userEmail, String name) {
         nameLabel.setText(name);
@@ -185,6 +163,19 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
     }
 
+    public void handleSubmit(View view) {
+        iBlockedUFormFragment.handleSubmit(view);
+
+    }
+
+    public boolean hasInternetConnection() {
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
+
     public void signIn(View view) {
         final String emailAddress = signinEmailEditText.getText().toString();
         if(emailAddress.isEmpty()) {
@@ -193,7 +184,6 @@ public class IBlockedUMainActivity extends AppCompatActivity
         }
 
         RequestQueue queue = Volley.newRequestQueue(this);
-
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getRequestUrl(
                 HttpUtils.SIGN_IN_ENDPOINT, emailAddress, ""),
@@ -214,35 +204,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Please try signing-in again", Toast.LENGTH_LONG).show();
             }
         });
-// Add the request to the RequestQueue.
         queue.add(stringRequest);
-
-
-//
-//        RequestParams rp = new RequestParams();
-//        rp.add(HttpUtils.EMAIL_PARAM, emailAddress);
-//
-//        HttpUtils.get(HttpUtils.SIGN_IN_ENDPOINT, rp, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                // If the response is JSONObject instead of expected JSONArray
-//                Log.d("asd", "---------------- this is response : " + response);
-//                try {
-//                    JSONObject serverResp = new JSONObject(response.toString());
-//                } catch (JSONException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
-//                int a =1;
-//                // Pull out the first event on the public timeline
-//
-//            }
-//
-//        });
 
     }
 
@@ -250,7 +212,8 @@ public class IBlockedUMainActivity extends AppCompatActivity
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(iBlockedUFragment);
-        fragmentTransaction.replace(R.id.main_content, IBlockedUFormFragment.newInstance(detetction));
+        iBlockedUFormFragment = IBlockedUFormFragment.newInstance(detetction, emailLabel.getText().toString());
+        fragmentTransaction.replace(R.id.main_content, iBlockedUFormFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

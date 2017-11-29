@@ -1,7 +1,5 @@
 package com.salesforce.iblockedu;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 /**
@@ -23,14 +28,11 @@ import android.widget.TextView;
 public class IBlockedUFormFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM_LICENSE_PLATE = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_LICENSE_PLATE = "param_license_plate";
+    private static final String ARG_PARAM_EMAIL = "param_email";
 
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParamLicensePlate;
+    private String mParamEmail;
 
     private OnFragmentInteractionListener mListener;
 
@@ -47,10 +49,11 @@ public class IBlockedUFormFragment extends Fragment {
      * @return A new instance of fragment IBlockedUFormFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IBlockedUFormFragment newInstance(String licensePlate) {
+    public static IBlockedUFormFragment newInstance(String licensePlate, String email) {
         IBlockedUFormFragment fragment = new IBlockedUFormFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_LICENSE_PLATE, licensePlate);
+        args.putString(ARG_PARAM_EMAIL, email);
 
         fragment.setArguments(args);
         return fragment;
@@ -60,8 +63,8 @@ public class IBlockedUFormFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParamLicensePlate = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
+            mParamEmail = getArguments().getString(ARG_PARAM_EMAIL);
         }
     }
 
@@ -70,15 +73,8 @@ public class IBlockedUFormFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_iblocked_uform, container, false);
-        String lisence = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
-        ((EditText)inflate.findViewById(R.id.license_plate)).setText(lisence);
-
-
-        //Build the blocking message
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        String owner = sharedPref.getString(lisence, "Guest");
-        String message = "You are blocking "+ owner;
-        ((TextView)inflate.findViewById(R.id.form_block_message)).setText(message);
+        String license = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
+        ((EditText)inflate.findViewById(R.id.license_plate)).setText(license);
 
         return inflate;
     }
@@ -97,6 +93,28 @@ public class IBlockedUFormFragment extends Fragment {
     }
 
     public void handleSubmit(View view) {
+        String licensePlate = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
+        String email = getArguments().getString(ARG_PARAM_EMAIL);
+
+        boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
+
+        if(hasInternet) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getRequestUrl(
+                    HttpUtils.BLOCK_ENDPOINT, email, licensePlate),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Please try submitting again", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(stringRequest);
+        }
 
     }
 
