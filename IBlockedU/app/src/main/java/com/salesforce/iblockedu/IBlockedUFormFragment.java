@@ -66,6 +66,7 @@ public class IBlockedUFormFragment extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_iblocked_uform, container, false);
         ((EditText)inflate.findViewById(R.id.license_plate)).setText(getArguments().getString(ARG_PARAM_LICENSE_PLATE));
+
         return inflate;
     }
 
@@ -80,6 +81,10 @@ public class IBlockedUFormFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void handleSubmit(View view) {
+
     }
 
     /**

@@ -23,9 +23,8 @@
             android:id="@+id/editText5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="46dp"
+            android:layout_alignStart="@+id/license_plate"
             android:layout_marginTop="102dp"
             android:ems="10"
             android:inputType="time" />
@@ -44,10 +43,9 @@
             android:id="@+id/license_plate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/editText5"
+            android:layout_alignStart="@+id/button2"
             android:layout_below="@+id/editText5"
-            android:layout_marginTop="28dp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="27dp"
             android:ems="10"
             android:inputType="number"
             android:text="" />
@@ -59,6 +57,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="76dp"
+            android:onClick="handleSubmit"
             android:text="Submit" />
 
     </RelativeLayout>
