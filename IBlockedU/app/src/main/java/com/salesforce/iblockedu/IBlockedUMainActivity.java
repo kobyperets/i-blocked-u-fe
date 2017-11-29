@@ -23,6 +23,8 @@ public class IBlockedUMainActivity extends AppCompatActivity
         IBlockedUFragment.OnFragmentInteractionListener {
 
     public static final String PREFS_NAME = "IBlockedUPrefs";
+    private IBlockedUFragment iBlockedUFragment;
+    private IBlockUWHOFragment iBlockUWHOFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +105,11 @@ public class IBlockedUMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_iblockedu_camera) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockedUFragment()).commit();
+            iBlockedUFragment = new IBlockedUFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockedUFragment).commit();
         } else if (id == R.id.nav_gallery) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockUWHOFragment()).commit();
+            iBlockUWHOFragment = new IBlockUWHOFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUWHOFragment).commit();
         } else if (id == R.id.nav_slideshow) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockUGoingHomeFragment()).commit();
 
@@ -124,5 +128,14 @@ public class IBlockedUMainActivity extends AppCompatActivity
     public void signIn(View view) {
         Toast.makeText(getApplicationContext(), "signed in", Toast.LENGTH_LONG);
 
+    }
+
+    public void openBlockSubmissionForm(String detetction) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(iBlockedUFragment);
+        fragmentTransaction.replace(R.id.main_content, IBlockedUFormFragment.newInstance(detetction));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

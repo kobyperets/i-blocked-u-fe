@@ -15,7 +15,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -102,11 +101,7 @@ public class IBlockedUFragment extends Fragment {
         processor.setOcrDetectorProcessorListener(new OcrDetectorProcessor.OcrDetectorProcessorListener() {
             @Override
             public void onDetectionComplete(String detection) {
-//                textRecognizer.setProcessor(null);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.main_content, new IBlockedUFormFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                ((IBlockedUMainActivity)getActivity()).openBlockSubmissionForm(detection);
             }
         });
         textRecognizer.setProcessor(processor);
@@ -401,17 +396,6 @@ public class IBlockedUFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 

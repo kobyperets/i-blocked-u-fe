@@ -34,14 +34,14 @@
             android:id="@+id/name_label2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/editText7"
-            android:layout_alignBottom="@+id/editText7"
+            android:layout_alignBaseline="@+id/license_plate"
+            android:layout_alignBottom="@+id/license_plate"
             android:layout_alignStart="@+id/name_label3"
             android:text="License plate"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <EditText
-            android:id="@+id/editText7"
+            android:id="@+id/license_plate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/editText5"
