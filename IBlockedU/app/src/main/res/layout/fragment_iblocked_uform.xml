@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.salesforce.iblockedu.IBlockedUFormFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/name_label3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText5"
+            android:layout_alignBottom="@+id/editText5"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="31dp"
+            android:text="Exit time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="46dp"
+            android:layout_marginTop="102dp"
+            android:ems="10"
+            android:inputType="time" />
+
+        <TextView
+            android:id="@+id/name_label2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editText7"
+            android:layout_alignBottom="@+id/editText7"
+            android:layout_alignStart="@+id/name_label3"
+            android:text="License plate"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <EditText
+            android:id="@+id/editText7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/editText5"
+            android:layout_below="@+id/editText5"
+            android:layout_marginTop="28dp"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="76dp"
+            android:text="Submit" />
+
+    </RelativeLayout>
+
+</FrameLayout>

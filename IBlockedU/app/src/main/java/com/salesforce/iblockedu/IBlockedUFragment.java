@@ -15,6 +15,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -101,7 +102,11 @@ public class IBlockedUFragment extends Fragment {
         processor.setOcrDetectorProcessorListener(new OcrDetectorProcessor.OcrDetectorProcessorListener() {
             @Override
             public void onDetectionComplete(String detection) {
-                textRecognizer.setProcessor(null);
+//                textRecognizer.setProcessor(null);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.main_content, new IBlockedUFormFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         textRecognizer.setProcessor(processor);

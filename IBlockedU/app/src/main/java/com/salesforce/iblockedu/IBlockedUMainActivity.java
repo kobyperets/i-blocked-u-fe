@@ -60,7 +60,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
             signinView.findViewById(R.id.signin_btn).setVisibility(View.INVISIBLE);
 
-            navigationView.getMenu().setGroupEnabled(0, true);
+            navigationView.getMenu().setGroupEnabled(R.id.side_menu, true);
         }
     }
 
@@ -105,8 +105,9 @@ public class IBlockedUMainActivity extends AppCompatActivity
         if (id == R.id.nav_iblockedu_camera) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockedUFragment()).commit();
         } else if (id == R.id.nav_gallery) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockUWHOFragment()).commit();
         } else if (id == R.id.nav_slideshow) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockUGoingHomeFragment()).commit();
 
         }
 
