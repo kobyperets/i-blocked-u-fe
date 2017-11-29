@@ -1,10 +1,12 @@
 package com.salesforce.iblockedu;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +16,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+//import com.loopj.android.http.JsonHttpResponseHandler;
+//import com.loopj.android.http.RequestParams;
+//
+//import org.json.JSONArray;
+//import org.json.JSONException;
+//import org.json.JSONObject;
+//
+//import cz.msebera.android.httpclient.Header;
 
 public class IBlockedUMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -25,6 +43,11 @@ public class IBlockedUMainActivity extends AppCompatActivity
     public static final String PREFS_NAME = "IBlockedUPrefs";
     private IBlockedUFragment iBlockedUFragment;
     private IBlockUWHOFragment iBlockUWHOFragment;
+    private TextView nameLabel;
+    private TextView emailLabel;
+    private EditText signinEmailEditText;
+    private Button signinInBtn;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,22 +71,30 @@ public class IBlockedUMainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String email = settings.getString("email", "");
-        if(email.isEmpty()) {
-
-            View signinView = navigationView.getHeaderView(0);
-
-            ((TextView)signinView.findViewById(R.id.name_label)).setText("bla bla");
-            ((TextView)signinView.findViewById(R.id.email_label)).setText("bla@bla");
-
-            signinView.findViewById(R.id.signin_btn).setVisibility(View.INVISIBLE);
-
-            navigationView.getMenu().setGroupEnabled(R.id.side_menu, true);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String userEmail = settings.getString("email", "");
+        String name = settings.getString("name", "");
+        View signinView = navigationView.getHeaderView(0);
+        nameLabel = ((TextView)signinView.findViewById(R.id.name_label));
+        emailLabel = (TextView) signinView.findViewById(R.id.email_label);
+        signinEmailEditText = (EditText)signinView.findViewById(R.id.email_signin_edittext);
+        signinInBtn = (Button)signinView.findViewById(R.id.signin_btn);
+        if(!userEmail.isEmpty()) {
+            enableSignedInUser(userEmail, name);
         }
+    }
+
+    private void enableSignedInUser(String userEmail, String name) {
+        nameLabel.setText(name);
+        emailLabel.setText(userEmail);
+
+        signinInBtn.setVisibility(View.INVISIBLE);
+        signinEmailEditText.setVisibility(View.INVISIBLE);
+
+        navigationView.getMenu().setGroupEnabled(R.id.side_menu, true);
     }
 
     @Override
@@ -126,7 +157,63 @@ public class IBlockedUMainActivity extends AppCompatActivity
     }
 
     public void signIn(View view) {
-        Toast.makeText(getApplicationContext(), "signed in", Toast.LENGTH_LONG);
+        final String emailAddress = signinEmailEditText.getText().toString();
+        if(emailAddress.isEmpty()) {
+            Toast.makeText(this, "Please provide valid email address", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getRequestUrl(
+                HttpUtils.SIGN_IN_ENDPOINT, emailAddress, ""),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        enableSignedInUser(emailAddress, response);
+
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("email", emailAddress);
+                        editor.putString("name", response);
+                        editor.apply();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Please try signing-in again", Toast.LENGTH_LONG).show();
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+
+//
+//        RequestParams rp = new RequestParams();
+//        rp.add(HttpUtils.EMAIL_PARAM, emailAddress);
+//
+//        HttpUtils.get(HttpUtils.SIGN_IN_ENDPOINT, rp, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                // If the response is JSONObject instead of expected JSONArray
+//                Log.d("asd", "---------------- this is response : " + response);
+//                try {
+//                    JSONObject serverResp = new JSONObject(response.toString());
+//                } catch (JSONException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+//                int a =1;
+//                // Pull out the first event on the public timeline
+//
+//            }
+//
+//        });
 
     }
 
