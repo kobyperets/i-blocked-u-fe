@@ -1,5 +1,6 @@
 package com.salesforce.iblockedu;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,10 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class IBlockedUMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-            IBlockedUFragment.OnFragmentInteractionListener {
+        IBlockedUFragment.OnFragmentInteractionListener {
+
+    public static final String PREFS_NAME = "IBlockedUPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,20 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String email = settings.getString("email", "");
+        if(email.isEmpty()) {
+
+            View signinView = navigationView.getHeaderView(0);
+
+            ((TextView)signinView.findViewById(R.id.name_label)).setText("bla bla");
+            ((TextView)signinView.findViewById(R.id.email_label)).setText("bla@bla");
+
+            signinView.findViewById(R.id.signin_btn).setVisibility(View.INVISIBLE);
+
+            navigationView.getMenu().setGroupEnabled(0, true);
+        }
     }
 
     @Override
@@ -88,12 +108,6 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -103,6 +117,11 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public void signIn(View view) {
+        Toast.makeText(getApplicationContext(), "signed in", Toast.LENGTH_LONG);
 
     }
 }
