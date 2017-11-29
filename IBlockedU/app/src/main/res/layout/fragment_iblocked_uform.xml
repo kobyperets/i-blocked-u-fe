@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.salesforce.iblockedu.IBlockedUFormFragment">
+    tools:context="com.salesforce.iblockedu.IBlockedUFormFragment"
+    android:id="@+id/form_layout">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,22 +13,24 @@
             android:id="@+id/name_label3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/editText5"
-            android:layout_alignBottom="@+id/editText5"
+            android:layout_alignBaseline="@+id/exit_time"
+            android:layout_alignBottom="@+id/exit_time"
             android:layout_alignParentStart="true"
             android:layout_marginStart="31dp"
             android:text="Exit time"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-        <EditText
-            android:id="@+id/editText5"
+        <TextView
+            android:id="@+id/exit_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/license_plate"
             android:layout_marginTop="102dp"
-            android:ems="10"
-            android:inputType="time" />
+            android:inputType="time"
+            android:onClick="showTimePickerDialog"
+            android:text="19:00"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
             android:id="@+id/name_label2"
@@ -44,11 +47,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/button2"
-            android:layout_below="@+id/editText5"
+            android:layout_below="@+id/name_label3"
             android:layout_marginTop="27dp"
             android:ems="10"
             android:inputType="number"
             android:text="" />
+
 
         <Button
             android:id="@+id/button2"
