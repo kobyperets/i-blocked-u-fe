@@ -29,6 +29,7 @@
             android:layout_marginTop="102dp"
             android:inputType="time"
             android:onClick="showTimePickerDialog"
+            android:padding="10dp"
             android:text="19:00"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -63,6 +64,15 @@
             android:layout_marginBottom="76dp"
             android:onClick="handleSubmit"
             android:text="Submit" />
+
+        <TextView
+            android:id="@+id/form_block_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/name_label2"
+            android:layout_below="@+id/license_plate"
+            android:layout_marginTop="63dp"
+            android:text="TextView" />
 
     </RelativeLayout>
 

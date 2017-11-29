@@ -1,5 +1,7 @@
 package com.salesforce.iblockedu;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 /**
@@ -22,6 +25,8 @@ public class IBlockedUFormFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM_LICENSE_PLATE = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +70,15 @@ public class IBlockedUFormFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_iblocked_uform, container, false);
-        ((EditText)inflate.findViewById(R.id.license_plate)).setText(getArguments().getString(ARG_PARAM_LICENSE_PLATE));
+        String lisence = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
+        ((EditText)inflate.findViewById(R.id.license_plate)).setText(lisence);
+
+
+        //Build the blocking message
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String owner = sharedPref.getString(lisence, "Guest");
+        String message = "You are blocking "+ owner;
+        ((TextView)inflate.findViewById(R.id.form_block_message)).setText(message);
 
         return inflate;
     }
