@@ -29,11 +29,11 @@ public class IBlockUWHOFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM_EMAIL = "paramEmail";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_BLOCKING_OWNER = "paramBlockingOwner";
 
     // TODO: Rename and change types of parameters
     private String mParamEmail;
-    private String mParam2;
+    private String mParamBlockingOwner;
 
     private OnFragmentInteractionListener mListener;
     private TextView mMessageView;
@@ -50,10 +50,11 @@ public class IBlockUWHOFragment extends Fragment {
      * @return A new instance of fragment IBlockUWHOFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IBlockUWHOFragment newInstance(String email) {
+    public static IBlockUWHOFragment newInstance(String email, String blockingOwner) {
         IBlockUWHOFragment fragment = new IBlockUWHOFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_EMAIL, email);
+        args.putString(ARG_PARAM_BLOCKING_OWNER, blockingOwner);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,6 +64,7 @@ public class IBlockUWHOFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParamEmail = getArguments().getString(ARG_PARAM_EMAIL);
+            mParamBlockingOwner = getArguments().getString(ARG_PARAM_BLOCKING_OWNER);
         }
     }
 
@@ -75,7 +77,7 @@ public class IBlockUWHOFragment extends Fragment {
 
         boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
 
-        if(hasInternet) {
+        if(hasInternet && mParamBlockingOwner.isEmpty()) {
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             // Request a string response from the provided URL.
             String email = getArguments().getString(ARG_PARAM_EMAIL);
@@ -88,7 +90,7 @@ public class IBlockUWHOFragment extends Fragment {
                             if(response.toLowerCase().contains("error")){
                                 msg = "No information at the moment. Try again later...";
                             } else{
-                                msg = response.split(",")[0] + "\n\n" + response.split(",")[1];
+                                msg = response;
                             }
                             mMessageView.setText(msg);
                         }
@@ -102,7 +104,8 @@ public class IBlockUWHOFragment extends Fragment {
             });
             queue.add(stringRequest);
         } else {
-            //TODO: IMPLEMENT OFFLINE MECHANISM
+            mMessageView.setText("It looks like " + mParamBlockingOwner + " is blocking you.\n\n" +
+            "Please contact the front desk at 03-6793600");
         }
 
         return inflate;

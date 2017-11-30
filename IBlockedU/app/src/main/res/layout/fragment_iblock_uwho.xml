@@ -17,5 +17,16 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="197dp"
             android:text="Checking..." />
+
+        <Button
+            android:id="@+id/buttonStillBlocked"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimary"
+            android:text="Still Blocked"
+            android:onClick="handleStillBlocked"/>
     </RelativeLayout>
 </FrameLayout>

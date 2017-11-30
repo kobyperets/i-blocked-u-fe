@@ -75,8 +75,8 @@ public class IBlockedUFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParamEmail = getArguments().getString(ARG_PARAM_EMAIL);
+            mParamStillBlocked = getArguments().getBoolean(ARG_PARAM_STILL_BLOCKED);
         }
     }
 
@@ -101,7 +101,7 @@ public class IBlockedUFragment extends Fragment {
         processor.setOcrDetectorProcessorListener(new OcrDetectorProcessor.OcrDetectorProcessorListener() {
             @Override
             public void onDetectionComplete(String detection) {
-                ((IBlockedUMainActivity)getActivity()).openBlockSubmissionForm(detection);
+                ((IBlockedUMainActivity)getActivity()).openBlockSubmissionForm(detection, mParamStillBlocked);
             }
         });
         textRecognizer.setProcessor(processor);
@@ -312,12 +312,12 @@ public class IBlockedUFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_EMAIL = "param1";
+    private static final String ARG_PARAM_STILL_BLOCKED = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParamEmail;
+    private Boolean mParamStillBlocked;
 
     private OnFragmentInteractionListener mListener;
 
@@ -329,16 +329,16 @@ public class IBlockedUFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param email Parameter 1.
+     * @param stillBlocked Parameter 2.
      * @return A new instance of fragment IBlockedUFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IBlockedUFragment newInstance(String param1, String param2) {
+    public static IBlockedUFragment newInstance(String email, boolean stillBlocked) {
         IBlockedUFragment fragment = new IBlockedUFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM_EMAIL, email);
+        args.putBoolean(ARG_PARAM_STILL_BLOCKED, stillBlocked);
         fragment.setArguments(args);
         return fragment;
     }

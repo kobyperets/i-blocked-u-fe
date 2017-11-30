@@ -8,12 +8,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
-import android.util.JsonReader;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,7 +35,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -99,10 +95,10 @@ public class IBlockedUMainActivity extends AppCompatActivity
         }
 
         cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        putLisenceData();
+        putLicenseData();
     }
 
-    private void putLisenceData() {
+    private void putLicenseData() {
 
 
         boolean hasInternet = hasInternetConnection();
@@ -211,7 +207,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
             iBlockedUFragment = new IBlockedUFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockedUFragment).commit();
         } else if (id == R.id.nav_iblockedu_whos_blocking) {
-            iBlockUWHOFragment = IBlockUWHOFragment.newInstance(emailLabel.getText().toString());
+            iBlockUWHOFragment = IBlockUWHOFragment.newInstance(emailLabel.getText().toString(), "");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUWHOFragment).commit();
         } else if (id == R.id.nav_iblockedu_going_home) {
             iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString(), emailLabel.getText().toString());
@@ -274,12 +270,21 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
     }
 
-    public void openBlockSubmissionForm(String detetction) {
+    public void openBlockSubmissionForm(String detection, Boolean stillBlocked) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(iBlockedUFragment);
-        iBlockedUFormFragment = IBlockedUFormFragment.newInstance(detetction, emailLabel.getText().toString());
-        fragmentTransaction.replace(R.id.main_content, iBlockedUFormFragment);
+
+        if(stillBlocked) {
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            String owner = sharedPref.getString(detection, "a Guest");
+            iBlockUWHOFragment = IBlockUWHOFragment.newInstance(emailLabel.getText().toString(), owner);
+            fragmentTransaction.replace(R.id.main_content, iBlockUWHOFragment);
+
+        } else {
+            iBlockedUFormFragment = IBlockedUFormFragment.newInstance(detection, emailLabel.getText().toString());
+            fragmentTransaction.replace(R.id.main_content, iBlockedUFormFragment);
+        }
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -326,6 +331,18 @@ public class IBlockedUMainActivity extends AppCompatActivity
 
     public void handleUnblock(View view) {
         iBlockUGoingHomeFragment.handleUnblock();
+    }
+
+    public void handleStillBlocked(View view) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.remove(iBlockUWHOFragment);
+
+        iBlockedUFragment = IBlockedUFragment.newInstance(emailLabel.getText().toString(), true);
+        fragmentTransaction.replace(R.id.main_content, iBlockedUFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public static class TimePickerFragment extends DialogFragment
