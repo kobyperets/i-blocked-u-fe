@@ -9,12 +9,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textViewHomeMessage"
             android:layout_marginTop="133dp"
-            android:src="@drawable/blocked_car" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/goinghome" />
 
         <TextView
             android:id="@+id/textViewHomeMessage"
@@ -29,9 +31,10 @@
             android:id="@+id/btnUnblock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/textViewHomeMessage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="110dp"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="50dp"
             android:onClick="handleUnblock"
             android:text="Unblock" />
     </RelativeLayout>
