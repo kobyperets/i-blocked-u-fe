@@ -317,7 +317,7 @@ public class IBlockedUFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String mParamEmail;
-    private Boolean mParamStillBlocked;
+    private Boolean mParamStillBlocked = false;
 
     private OnFragmentInteractionListener mListener;
 
