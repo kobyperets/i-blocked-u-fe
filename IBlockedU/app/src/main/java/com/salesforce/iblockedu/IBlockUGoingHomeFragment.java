@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private TextView mMessageView;
+    private Button bUnblock;
 
     public IBlockUGoingHomeFragment() {
         // Required empty public constructor
@@ -75,6 +77,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_iblock_ugoing_home, container, false);
         mMessageView = (TextView)inflate.findViewById(R.id.textViewHomeMessage);
+        bUnblock = (Button)inflate.findViewById(R.id.btnUnblock);
 
         return inflate;
     }
@@ -85,7 +88,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
         String license = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String owner = sharedPref.getString(license, "a Guest");
-        String message = "You are blocking "+ owner + "\n\nClick UNBLOCK when you're out";
+        String message = "You are now blocking "+ owner + "\n\nClick UNBLOCK when you're heading out!";
         mMessageView.setText(message);
 
         super.onResume();
@@ -118,6 +121,8 @@ public class IBlockUGoingHomeFragment extends Fragment {
                                 msg = "No information at the moment";
                             }
                             mMessageView.setText(msg);
+                            bUnblock.setEnabled(false);
+
                         }
                     }, new Response.ErrorListener() {
                 @Override
