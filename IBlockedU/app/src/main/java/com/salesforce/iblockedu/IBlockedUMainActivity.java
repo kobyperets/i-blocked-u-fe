@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
+import android.util.JsonReader;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +36,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -97,16 +103,56 @@ public class IBlockedUMainActivity extends AppCompatActivity
     }
 
     private void putLisenceData() {
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-        int updatedOn = settings.getInt("licensePlates", 0);
-        //0 means we haven't enter the data yet, let's do it now
-        if (updatedOn == 0) {
-            int date = (int) (new Date().getTime()/1000);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("licensesPlateDate", date);
-            editor.putString("1797538", "Adam Elimelech");
-            editor.commit();
+
+
+        boolean hasInternet = hasInternetConnection();
+
+        if(hasInternet) {
+            RequestQueue queue = Volley.newRequestQueue(this);
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getAbsoluteUrl(
+                    HttpUtils.LICENSE_PLATES_ENDPOINT),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            ArrayList<String> listdata = new ArrayList<String>();
+                            try {
+                                JSONArray jArray = new JSONArray(response);
+                                if (jArray != null) {
+                                    for (int i=0;i<jArray.length();i++){
+                                        listdata.add(jArray.getString(i));
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+                            int updatedOn = settings.getInt("licensePlates", 0);
+                            //0 means we haven't enter the data yet, let's do it now
+                            if (updatedOn == 0 && listdata.size() > 0) {
+                                int date = (int) (new Date().getTime()/1000);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putInt("licensesPlateDate", date);
+                                for (String str : listdata){
+                                    String name = str.split(",")[0].split(":")[1].split("\"")[1];
+                                    String plateNumber = str.split(",")[1].split(":")[1].split("\"")[1];
+                                    editor.putString(plateNumber, name);
+
+
+                                }
+                                editor.commit();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            queue.add(stringRequest);
         }
+
 
         //TODO update if too old
 

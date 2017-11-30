@@ -14,6 +14,7 @@ public class HttpUtils {
     public static final String BASE_URL = "https://i-blocked-u.herokuapp.com/iblockedu/api/";
     public static final String SIGN_IN_ENDPOINT = "signin";
     public static final String BLOCK_ENDPOINT = "iAmBlocking";
+    public static final String LICENSE_PLATES_ENDPOINT = "carownersinfo";
     public static final String WHO_BLOCKS_ENDPOINT = "whoBlocks";
     public static final String GOING_HOME_ENDPOINT = "goingHome";
 
