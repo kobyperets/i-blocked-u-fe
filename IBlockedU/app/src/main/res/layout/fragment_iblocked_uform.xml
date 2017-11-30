@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.salesforce.iblockedu.IBlockedUFormFragment"
-    android:id="@+id/form_layout">
+    android:id="@+id/form_layout"
+    android:background="@color/common_google_signin_btn_text_dark_default">
 
     <RelativeLayout
         android:layout_width="match_parent"
