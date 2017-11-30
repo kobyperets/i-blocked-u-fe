@@ -112,7 +112,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
                             if(response.toLowerCase().contains("error")){
                                 msg = "No information at the moment. Try again later...";
                             } else{
-                                msg = response;
+                                msg = response.split(",")[0] + "\n\n" + response.split(",")[1];
                             }
                             if(response.isEmpty()) {
                                 msg = "No information at the moment";
