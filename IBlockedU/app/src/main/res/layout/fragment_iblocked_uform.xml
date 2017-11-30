@@ -65,9 +65,8 @@
             android:id="@+id/form_block_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/name_label2"
-            android:layout_below="@+id/license_plate"
-            android:layout_marginTop="63dp"
+            android:layout_alignTop="@+id/imageViewBlocking"
+            android:layout_centerHorizontal="true"
             android:text="" />
 
         <ImageView

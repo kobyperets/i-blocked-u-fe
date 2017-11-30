@@ -84,7 +84,7 @@ public class IBlockedUFormFragment extends Fragment {
         //Build the blocking message
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String owner = sharedPref.getString(license, "a Guest");
-        String message = "You are blocking "+ owner +"!";
+        String message = "You are going to block "+ owner +"!\n\nClick SUBMIT to confirm.";
         ((TextView)inflate.findViewById(R.id.form_block_message)).setText(message);
 
         return inflate;

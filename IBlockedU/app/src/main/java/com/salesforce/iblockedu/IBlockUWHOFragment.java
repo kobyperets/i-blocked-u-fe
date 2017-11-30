@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -37,6 +39,8 @@ public class IBlockUWHOFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private TextView mMessageView;
+    private Button bWhoBlocked;
+    private ImageView imageBlocked;
 
     public IBlockUWHOFragment() {
         // Required empty public constructor
@@ -74,6 +78,10 @@ public class IBlockUWHOFragment extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_iblock_uwho, container, false);
         mMessageView = (TextView)inflate.findViewById(R.id.textViewWhoBlocksMessage);
+        bWhoBlocked = (Button)inflate.findViewById(R.id.buttonStillBlocked);
+        imageBlocked = (ImageView)inflate.findViewById(R.id.image_who_blocked);
+
+        bWhoBlocked.setVisibility(View.INVISIBLE);
 
         boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
 
@@ -91,6 +99,14 @@ public class IBlockUWHOFragment extends Fragment {
                                 msg = "No information at the moment. Try again later...";
                             } else{
                                 msg = response;
+                                if (response.toLowerCase().contains("free")){
+                                    bWhoBlocked.setVisibility(View.VISIBLE);
+                                    imageBlocked.setVisibility(View.INVISIBLE);
+                                }
+                                if (response.toLowerCase().contains("currently")){
+                                    imageBlocked.setVisibility(View.VISIBLE);
+                                    imageBlocked.bringToFront();
+                                }
                             }
                             mMessageView.setText(msg);
                         }

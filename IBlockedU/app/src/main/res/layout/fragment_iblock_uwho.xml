@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,6 +22,7 @@
 
         <Button
             android:id="@+id/buttonStillBlocked"
+            android:visibility="invisible"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,5 +31,14 @@
             android:background="@color/colorPrimary"
             android:text="Still Blocked"
             android:onClick="handleStillBlocked"/>
+
+        <ImageView
+            android:id="@+id/image_who_blocked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewWhoBlocksMessage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="113dp"
+            android:src="@drawable/blocked_car" />
     </RelativeLayout>
 </FrameLayout>
