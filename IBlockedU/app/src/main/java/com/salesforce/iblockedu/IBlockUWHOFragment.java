@@ -104,8 +104,12 @@ public class IBlockUWHOFragment extends Fragment {
             });
             queue.add(stringRequest);
         } else {
-            mMessageView.setText("It looks like " + mParamBlockingOwner + " is blocking you.\n\n" +
-            "Please contact the front desk at 03-6793600");
+            if(!mParamBlockingOwner.isEmpty()) {
+                mMessageView.setText("It looks like " + mParamBlockingOwner + " is blocking you.\n\n" +
+                        "Please contact the front desk at 03-6793600");
+            } else {
+                mMessageView.setText("No registered blocking \n\nYou are free to go!");
+            }
         }
 
         return inflate;
