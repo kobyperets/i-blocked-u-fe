@@ -1,5 +1,9 @@
 package com.salesforce.iblockedu;
 
+import android.content.Context;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +30,7 @@ import com.android.volley.toolbox.Volley;
  * create an instance of this fragment.
  */
 public class IBlockedUFormFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    public static final String PREFS_NAME = "IBlockedUPrefs";
     private static final String ARG_PARAM_LICENSE_PLATE = "param_license_plate";
     private static final String ARG_PARAM_EMAIL = "param_email";
 
@@ -114,6 +117,17 @@ public class IBlockedUFormFragment extends Fragment {
                 }
             });
             queue.add(stringRequest);
+        } else {
+            SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("offlline_email", email);
+            editor.putString("offline_name", licensePlate);
+            editor.apply();
+
+            getActivity().registerReceiver(
+                    new NetworkChangeReceiver((IBlockedUMainActivity)getActivity()),
+                    new IntentFilter(
+                            ConnectivityManager.CONNECTIVITY_ACTION));
         }
 
     }

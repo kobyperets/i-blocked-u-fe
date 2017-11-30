@@ -223,6 +223,30 @@ public class IBlockedUMainActivity extends AppCompatActivity
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    public void processBlockRequest(final NetworkChangeReceiver networkChangeReceiver, final String email, final String licensePlate) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getRequestUrl(
+                HttpUtils.BLOCK_ENDPOINT, email, licensePlate),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("offlline_email", "");
+                        editor.putString("offline_name", "");
+                        editor.apply();
+                        unregisterReceiver(networkChangeReceiver);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Please try submitting again", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
 
