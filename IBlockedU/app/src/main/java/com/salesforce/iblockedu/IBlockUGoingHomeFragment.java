@@ -71,11 +71,6 @@ public class IBlockUGoingHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_iblock_ugoing_home, container, false);
         mMessageView = (TextView)inflate.findViewById(R.id.textViewHomeMessage);
-        return inflate;
-    }
-
-    @Override
-    public void onResume() {
 
         boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
 
@@ -108,6 +103,12 @@ public class IBlockUGoingHomeFragment extends Fragment {
         } else {
             //TODO: IMPLEMENT OFFLINE MECHANISM
         }
+
+        return inflate;
+    }
+
+    @Override
+    public void onResume() {
 
         super.onResume();
     }

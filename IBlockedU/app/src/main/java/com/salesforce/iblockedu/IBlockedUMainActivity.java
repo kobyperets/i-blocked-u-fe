@@ -239,6 +239,17 @@ public class IBlockedUMainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    public void openGoingHomeFragment(){
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(iBlockedUFormFragment);
+        fragmentTransaction.remove(iBlockedUFragment);
+        iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString());
+        fragmentTransaction.replace(R.id.main_content, iBlockUGoingHomeFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     public void showTimePickerDialog(View view) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");

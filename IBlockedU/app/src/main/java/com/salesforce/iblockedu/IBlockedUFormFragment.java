@@ -137,6 +137,7 @@ public class IBlockedUFormFragment extends Fragment {
                     new IntentFilter(
                             ConnectivityManager.CONNECTIVITY_ACTION));
         }
+        ((IBlockedUMainActivity)getActivity()).openGoingHomeFragment();
 
     }
 

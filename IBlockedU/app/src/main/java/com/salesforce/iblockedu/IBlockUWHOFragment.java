@@ -73,20 +73,6 @@ public class IBlockUWHOFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_iblock_uwho, container, false);
         mMessageView = (TextView)inflate.findViewById(R.id.textViewWhoBlocksMessage);
 
-        return inflate;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
-    @Override
-    public void onResume() {
-
         boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
 
         if(hasInternet) {
@@ -118,6 +104,20 @@ public class IBlockUWHOFragment extends Fragment {
         } else {
             //TODO: IMPLEMENT OFFLINE MECHANISM
         }
+
+        return inflate;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+
+    @Override
+    public void onResume() {
         super.onResume();
     }
 
