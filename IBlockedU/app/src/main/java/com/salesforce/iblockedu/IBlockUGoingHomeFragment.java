@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,11 +28,11 @@ public class IBlockUGoingHomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM_EMAIL = "email";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_LICENSE_PLATE = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParamEmail;
-    private String mParam2;
+    private String mParamLicensePlate;
 
     private OnFragmentInteractionListener mListener;
     private TextView mMessageView;
@@ -46,14 +45,16 @@ public class IBlockUGoingHomeFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     *
      * @param email Parameter 1.
      * @return A new instance of fragment IBlockUGoingHomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IBlockUGoingHomeFragment newInstance(String email) {
+    public static IBlockUGoingHomeFragment newInstance(String email, String licensePlate) {
         IBlockUGoingHomeFragment fragment = new IBlockUGoingHomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM_EMAIL, email);
+        args.putString(ARG_PARAM_LICENSE_PLATE, licensePlate);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,6 +64,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParamEmail = getArguments().getString(ARG_PARAM_EMAIL);
+            mParamLicensePlate = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
         }
     }
 
@@ -72,6 +74,22 @@ public class IBlockUGoingHomeFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_iblock_ugoing_home, container, false);
         mMessageView = (TextView)inflate.findViewById(R.id.textViewHomeMessage);
 
+        return inflate;
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public void handleUnblock() {
         boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
 
         if(hasInternet) {
@@ -103,20 +121,6 @@ public class IBlockUGoingHomeFragment extends Fragment {
         } else {
             //TODO: IMPLEMENT OFFLINE MECHANISM
         }
-
-        return inflate;
-    }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     /**

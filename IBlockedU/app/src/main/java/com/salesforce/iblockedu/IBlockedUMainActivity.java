@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -169,7 +168,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
             iBlockUWHOFragment = IBlockUWHOFragment.newInstance(emailLabel.getText().toString());
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUWHOFragment).commit();
         } else if (id == R.id.nav_iblockedu_going_home) {
-            iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString());
+            iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString(), emailLabel.getText().toString());
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUGoingHomeFragment).commit();
 
         }
@@ -239,12 +238,12 @@ public class IBlockedUMainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    public void openGoingHomeFragment(){
+    public void openGoingHomeFragment(String licensePlate){
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(iBlockedUFormFragment);
         fragmentTransaction.remove(iBlockedUFragment);
-        iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString());
+        iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString(), licensePlate);
         fragmentTransaction.replace(R.id.main_content, iBlockUGoingHomeFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -277,6 +276,10 @@ public class IBlockedUMainActivity extends AppCompatActivity
             }
         });
         queue.add(stringRequest);
+    }
+
+    public void handleUnblock(View view) {
+        iBlockUGoingHomeFragment.handleUnblock();
     }
 
     public static class TimePickerFragment extends DialogFragment

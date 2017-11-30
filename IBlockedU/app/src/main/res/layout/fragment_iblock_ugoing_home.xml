@@ -26,5 +26,13 @@
             android:layout_marginTop="197dp"
             android:text=""
             android:layout_below="@id/textViewHomeSafeTrip"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="220dp"
+            android:text="Unblock"
+            android:onClick="handleUnblock"/>
     </RelativeLayout>
 </FrameLayout>
