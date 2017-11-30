@@ -1,12 +1,20 @@
 package com.salesforce.iblockedu;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 /**
@@ -20,14 +28,15 @@ import android.view.ViewGroup;
 public class IBlockUWHOFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM_EMAIL = "paramEmail";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mParamEmail;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private TextView mMessageView;
 
     public IBlockUWHOFragment() {
         // Required empty public constructor
@@ -37,16 +46,14 @@ public class IBlockUWHOFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param email Parameter 1.
      * @return A new instance of fragment IBlockUWHOFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IBlockUWHOFragment newInstance(String param1, String param2) {
+    public static IBlockUWHOFragment newInstance(String email) {
         IBlockUWHOFragment fragment = new IBlockUWHOFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM_EMAIL, email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +62,7 @@ public class IBlockUWHOFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParamEmail = getArguments().getString(ARG_PARAM_EMAIL);
         }
     }
 
@@ -64,7 +70,10 @@ public class IBlockUWHOFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_iblock_uwho, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_iblock_uwho, container, false);
+        mMessageView = (TextView)inflate.findViewById(R.id.textViewWhoBlocksMessage);
+
+        return inflate;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -72,6 +81,44 @@ public class IBlockUWHOFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+
+    @Override
+    public void onResume() {
+
+        boolean hasInternet = ((IBlockedUMainActivity)getActivity()).hasInternetConnection();
+
+        if(hasInternet) {
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            // Request a string response from the provided URL.
+            String email = getArguments().getString(ARG_PARAM_EMAIL);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, HttpUtils.getRequestUrl(
+                    HttpUtils.WHO_BLOCKS_ENDPOINT, email, ""),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            String msg = "";
+                            if(response.toLowerCase().contains("error")){
+                                msg = "No information at the moment. Try again later...";
+                            } else{
+                                msg = response;
+                            }
+                            mMessageView.setText(msg);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("IBlockUWHOFragment", error.toString());
+                    mMessageView.setText("No information at the moment. Try again later...");
+//                    Toast.makeText(getActivity().getApplicationContext(), "Please try submitting again", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(stringRequest);
+        } else {
+            //TODO: IMPLEMENT OFFLINE MECHANISM
+        }
+        super.onResume();
     }
 
     @Override

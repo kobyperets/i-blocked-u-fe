@@ -146,7 +146,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
             iBlockedUFragment = new IBlockedUFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockedUFragment).commit();
         } else if (id == R.id.nav_iblockedu_whos_blocking) {
-            iBlockUWHOFragment = new IBlockUWHOFragment();
+            iBlockUWHOFragment = IBlockUWHOFragment.newInstance(emailLabel.getText().toString());
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUWHOFragment).commit();
         } else if (id == R.id.nav_iblockedu_going_home) {
             iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString());

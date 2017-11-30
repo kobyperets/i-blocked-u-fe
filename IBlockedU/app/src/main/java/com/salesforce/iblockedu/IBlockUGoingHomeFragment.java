@@ -88,8 +88,13 @@ public class IBlockUGoingHomeFragment extends Fragment {
                         @Override
                         public void onResponse(String response) {
                             String msg = "";
-                            if(!response.toLowerCase().contains("error")){
+                            if(response.toLowerCase().contains("error")){
+                                msg = "No information at the moment. Try again later...";
+                            } else{
                                 msg = response;
+                            }
+                            if(response.isEmpty()) {
+                                msg = "No information at the moment";
                             }
                             mMessageView.setText(msg);
                         }
@@ -100,19 +105,12 @@ public class IBlockUGoingHomeFragment extends Fragment {
                 }
             });
             queue.add(stringRequest);
+        } else {
+            //TODO: IMPLEMENT OFFLINE MECHANISM
         }
 
         super.onResume();
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-
 
     @Override
     public void onDetach() {
