@@ -85,7 +85,7 @@ public class IBlockUGoingHomeFragment extends Fragment {
         String license = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String owner = sharedPref.getString(license, "a Guest");
-        String message = "You are blocking "+ owner + "\nClick UnBlock when your'e out";
+        String message = "You are blocking "+ owner + "\n\nClick UNBLOCK when you're out";
         mMessageView.setText(message);
 
         super.onResume();
