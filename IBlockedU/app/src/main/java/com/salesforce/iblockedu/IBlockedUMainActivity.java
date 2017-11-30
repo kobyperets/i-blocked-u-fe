@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,6 +46,7 @@ public class IBlockedUMainActivity extends AppCompatActivity
     private IBlockedUFragment iBlockedUFragment;
     private IBlockUWHOFragment iBlockUWHOFragment;
     private IBlockedUFormFragment iBlockedUFormFragment;
+    private IBlockUGoingHomeFragment iBlockUGoingHomeFragment;
     private TextView nameLabel;
     private TextView emailLabel;
     private EditText signinEmailEditText;
@@ -145,11 +145,12 @@ public class IBlockedUMainActivity extends AppCompatActivity
         if (id == R.id.nav_iblockedu_camera) {
             iBlockedUFragment = new IBlockedUFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockedUFragment).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_iblockedu_whos_blocking) {
             iBlockUWHOFragment = new IBlockUWHOFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUWHOFragment).commit();
-        } else if (id == R.id.nav_slideshow) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new IBlockUGoingHomeFragment()).commit();
+        } else if (id == R.id.nav_iblockedu_going_home) {
+            iBlockUGoingHomeFragment = IBlockUGoingHomeFragment.newInstance(emailLabel.getText().toString());
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_content, iBlockUGoingHomeFragment).commit();
 
         }
 

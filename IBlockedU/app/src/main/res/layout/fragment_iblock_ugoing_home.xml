@@ -9,12 +9,22 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewHomeSafeTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:text="Have a safe trip!" />
+
+        <TextView
+            android:id="@+id/textViewHomeMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="197dp"
-            android:text="You are not blocking anyone :)" />
+            android:text=""
+            android:layout_below="@id/textViewHomeSafeTrip"/>
     </RelativeLayout>
 </FrameLayout>
