@@ -7,16 +7,16 @@
         <item
             android:id="@+id/nav_iblockedu_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Block Someone" />
+            android:title="I'm Blocking!" />
         <item
             android:id="@+id/nav_iblockedu_whos_blocking"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_block_black_24dp"
             android:title="Who's Blocking Me?"
             />
         <item
             android:id="@+id/nav_iblockedu_going_home"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Going Home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="I'm Going Home"
             />
     </group>
 
