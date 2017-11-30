@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -78,6 +79,13 @@ public class IBlockedUFormFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_iblocked_uform, container, false);
         String license = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
         ((EditText)inflate.findViewById(R.id.license_plate)).setText(license);
+
+
+        //Build the blocking message
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String owner = sharedPref.getString(license, "Guest");
+        String message = "You are blocking "+ owner;
+        ((TextView)inflate.findViewById(R.id.form_block_message)).setText(message);
 
         return inflate;
     }

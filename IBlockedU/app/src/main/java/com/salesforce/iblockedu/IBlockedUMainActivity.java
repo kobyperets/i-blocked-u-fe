@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class IBlockedUMainActivity extends AppCompatActivity
@@ -92,7 +94,25 @@ public class IBlockedUMainActivity extends AppCompatActivity
         }
 
         cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        putLisenceData();
     }
+
+    private void putLisenceData() {
+        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+        int updatedOn = settings.getInt("licensePlates", 0);
+        //0 means we haven't enter the data yet, let's do it now
+        if (updatedOn == 0) {
+            int date = (int) (new Date().getTime()/1000);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("licensesPlateDate", date);
+            editor.putString("1797538", "Adam Elimelech");
+            editor.commit();
+        }
+
+        //TODO update if too old
+
+    }
+
 
     private void enableSignedInUser(String userEmail, String name) {
         nameLabel.setText(name);

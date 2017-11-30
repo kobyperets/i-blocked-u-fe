@@ -72,7 +72,7 @@
             android:layout_alignStart="@+id/name_label2"
             android:layout_below="@+id/license_plate"
             android:layout_marginTop="63dp"
-            android:text="TextView" />
+            android:text="" />
 
     </RelativeLayout>
 
