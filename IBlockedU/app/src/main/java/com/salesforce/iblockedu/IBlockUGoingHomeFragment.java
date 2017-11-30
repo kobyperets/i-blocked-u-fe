@@ -1,5 +1,7 @@
 package com.salesforce.iblockedu;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -79,6 +81,12 @@ public class IBlockUGoingHomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+        //Build the blocking message
+        String license = getArguments().getString(ARG_PARAM_LICENSE_PLATE);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String owner = sharedPref.getString(license, "a Guest");
+        String message = "You are blocking "+ owner + "\nClick UnBlock when your'e out";
+        mMessageView.setText(message);
 
         super.onResume();
     }

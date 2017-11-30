@@ -8,14 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textViewHomeSafeTrip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="140dp"
-            android:text="Have a safe trip!" />
+
 
         <TextView
             android:id="@+id/textViewHomeMessage"
@@ -24,15 +17,15 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="197dp"
-            android:text=""
-            android:layout_below="@id/textViewHomeSafeTrip"/>
+            android:text="" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="220dp"
-            android:text="Unblock"
-            android:onClick="handleUnblock"/>
+            android:layout_marginBottom="56dp"
+            android:onClick="handleUnblock"
+            android:text="Unblock" />
     </RelativeLayout>
 </FrameLayout>
